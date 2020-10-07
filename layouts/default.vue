@@ -7,7 +7,6 @@
       fixed
       app
     >
-      <!--
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -24,14 +23,13 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    -->
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="clipped"
       fixed
       app
     >
-      <!--<v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
     </v-app-bar>
@@ -62,10 +60,17 @@ export default {
           title: 'Graph Explorer',
           to: '/'
         },
+        /*
         {
           icon: 'mdi-api',
           title: 'API Documentation',
           to: '/api'
+        },
+        */
+        {
+          icon: 'mdi-code-tags',
+          title: 'Repositories',
+          to: '/code'
         }
       ],
       miniVariant: false,
