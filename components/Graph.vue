@@ -1,12 +1,22 @@
 <template>
   <div>
+    <Display
+      v-if="itemId > 0"
+      :element-type="elementType"
+      :item-id="itemId"
+      :item-s-i-d="itemSID"
+      :item-t-i-d="itemTID"
+      :item-name="itemName"
+      :item-color="itemColor"
+      @delete-item="emitDelete"
+    />
     <D3Network
       ref='net'
       :net-nodes="nodes"
       :net-links="edges"
       :options="options"
-      v-on:node-click="nodeClicked"
-      v-on:link-click="edgeClicked"
+      @node-click="nodeClicked"
+      @link-click="edgeClicked"
     />
   </div>
 </template>
@@ -14,11 +24,13 @@
 <script>
 
 import D3Network from 'vue-d3-network'
+import Display from '~/components/Display.vue'
 
 export default {
   name: 'Graph',
   components: {
-    D3Network
+    D3Network,
+    Display
   },
   props: {
     nodes: {
@@ -38,12 +50,34 @@ export default {
       default: null
     }
   },
+  data: () => ({
+    elementType: null,
+    itemId: -1,
+    itemSID: -1,
+    itemTID: -1,
+    itemName: null,
+    itemColor: null
+  }),
   methods: {
     nodeClicked (event, node) {
-      // alert(node.id)
+      this.elementType = 'Node'
+      this.itemId = node.id
+      this.itemSID = -1
+      this.itemTID = -1
+      this.itemName = node.name
+      this.itemColor = node._color
     },
     edgeClicked (event, edge) {
-      // alert(edge.id)
+      this.elementType = 'Edge'
+      this.itemId = edge.id
+      this.itemSID = edge.sid
+      this.itemTID = edge.tid
+      this.itemName = edge.name
+      this.itemColor = edge._color
+    },
+    emitDelete (data) {
+      this.$emit('delete-item', data)
+      this.itemId = -1
     }
   }
 }
@@ -54,9 +88,10 @@ export default {
 
 div {
   font-family: 'PT Sans', sans-serif;
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 20px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  position: relative;
 }
 .title{
   position:absolute;

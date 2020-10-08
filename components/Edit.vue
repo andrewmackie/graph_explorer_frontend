@@ -237,7 +237,7 @@ export default {
    margin-top: 2rem;
  }
  .search-space {
-   margin-top: 25px;
+   margin-top: 28px;
  }
  .new-item-space {
    margin-top: 15px;

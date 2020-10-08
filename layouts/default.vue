@@ -33,7 +33,9 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
     </v-app-bar>
-    <v-main>
+    <v-main
+      :class="{graphtemplate: $route.path === '/'}"
+    >
       <v-container>
         <nuxt />
       </v-container>
@@ -81,3 +83,10 @@ export default {
   }
 }
 </script>
+
+<style>
+  .graphtemplate {
+    background-color: #f6f6f6;
+    margin-top: 1rem;
+  }
+</style>

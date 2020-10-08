@@ -6,6 +6,7 @@
       :edges="edges"
       :options="options"
       :loading="loading"
+      @delete-item="deleteItem"
     />
     <Edit
       name="Node"
