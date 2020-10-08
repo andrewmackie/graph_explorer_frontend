@@ -65,7 +65,7 @@ export default {
         },
         {
           icon: 'mdi-api',
-          title: 'API Documentation',
+          title: 'API',
           to: '/api'
         },
         {

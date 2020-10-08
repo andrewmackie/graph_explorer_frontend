@@ -86,7 +86,7 @@ export default {
   mounted () {
     axios({
       method: 'get',
-      url: `${this.serverUrl}/graph`
+      url: `${this.serverUrl}/api/v${this.apiVersion}/graph`
     })
     // See https://michaelnthiessen.com/this-is-undefined/ 'Using the right function when fetching data' which fixed 'this is undefined'
       .then((response, data) => {
@@ -107,6 +107,7 @@ export default {
   },
   methods: {
     deleteItem (data) {
+      this.loading = true
       axios({
         method: 'delete',
         url: `${this.serverUrl}/api/v${this.apiVersion}/${data.noun}/${data.id}`
@@ -129,6 +130,7 @@ export default {
         })
     },
     putItem (data) {
+      this.loading = true
       console.log(data.item)
       axios({
         method: 'put',
@@ -153,6 +155,7 @@ export default {
         })
     },
     postItem (data) {
+      this.loading = true
       axios({
         method: 'post',
         url: `${this.serverUrl}/api/v${this.apiVersion}/${data.noun}`,
