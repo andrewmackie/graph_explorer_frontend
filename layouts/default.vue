@@ -63,13 +63,11 @@ export default {
           title: 'Graph Explorer',
           to: '/'
         },
-        /*
         {
           icon: 'mdi-api',
           title: 'API Documentation',
           to: '/api'
         },
-        */
         {
           icon: 'mdi-code-tags',
           title: 'Repositories',

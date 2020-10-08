@@ -19,6 +19,7 @@
     "nuxt": "^2.14.5",
     "vue-color": "^2.7.1",
     "vue-d3-network": "^0.1.28",
+    "vue-openapi": "^0.10.0",
     "vue-scrollto": "^2.18.2"
   },
   "devDependencies": {

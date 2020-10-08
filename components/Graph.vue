@@ -1,9 +1,17 @@
 <template>
   <div>
-    <div>
+    <div style="position: relative;">
+      <v-progress-linear
+        v-if="loading"
+        color="blue accent-4"
+        indeterminate
+        rounded
+        height="4"
+        style="position: absolute; top: 0; left: 0; z-index: 10;"
+      />
       <Display
         id="display"
-          v-if="itemId > 0"
+        v-if="itemId > 0"
         :element-type="elementType"
         :item-id="itemId"
         :item-s-i-d="itemSID"
