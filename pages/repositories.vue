@@ -1,7 +1,6 @@
 <template>
   <v-container id="main" justify="center" align="center">
     <h1>Repositories</h1>
-    <router-link to="/">Home</router-link>
     <h2>Front End</h2>
     <div>
       <v-icon>mdi-github</v-icon>
@@ -18,7 +17,7 @@
       <a href="https://vuetifyjs.com/en/" target="_blank" rel="nofollow noopener, noreferrer">VuetifyJS</a>
       (a
       <a href="https://material.io/design" target="_blank" rel="nofollow noopener, noreferrer">Material Design</a>
-      framework for VueJS).</p>
+      framework for VueJS) The front end for this site is hosted on Netlify.</p>
     <h2>Back End</h2>
     <div>
       <v-icon>mdi-github</v-icon>
@@ -30,7 +29,7 @@
       <a href="https://www.python.org/" target="_blank" rel="nofollow noopener, noreferrer">Python</a>,
       <a href="https://flask.palletsprojects.com" target="_blank" rel="nofollow noopener, noreferrer">Flask</a>,
       <a href="https://flask-sqlalchemy.palletsprojects.com" target="_blank" rel="nofollow noopener, noreferrer">Flask-SQLAlchemy</a> and functionally tested with
-      <a href="https://docs.pytest.org/en/latest/" target="_blank" rel="nofollow noopener, noreferrer">PyTest</a>.
+      <a href="https://docs.pytest.org/en/latest/" target="_blank" rel="nofollow noopener, noreferrer">PyTest</a>. The back end for this site is hosted on Heroku.
     </p>
 
   </v-container>

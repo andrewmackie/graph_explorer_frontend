@@ -1,23 +1,26 @@
 <template>
   <div>
-    <Display
-      v-if="itemId > 0"
-      :element-type="elementType"
-      :item-id="itemId"
-      :item-s-i-d="itemSID"
-      :item-t-i-d="itemTID"
-      :item-name="itemName"
-      :item-color="itemColor"
-      @delete-item="emitDelete"
-    />
-    <D3Network
-      ref='net'
-      :net-nodes="nodes"
-      :net-links="edges"
-      :options="options"
-      @node-click="nodeClicked"
-      @link-click="edgeClicked"
-    />
+    <div>
+      <Display
+        id="display"
+          v-if="itemId > 0"
+        :element-type="elementType"
+        :item-id="itemId"
+        :item-s-i-d="itemSID"
+        :item-t-i-d="itemTID"
+        :item-name="itemName"
+        :item-color="itemColor"
+        @delete-item="emitDelete"
+      />
+      <D3Network
+        ref='net'
+        :net-nodes="nodes"
+        :net-links="edges"
+        :options="options"
+        @node-click="nodeClicked"
+        @link-click="edgeClicked"
+      />
+    </div>
   </div>
 </template>
 
@@ -66,6 +69,7 @@ export default {
       this.itemTID = -1
       this.itemName = node.name
       this.itemColor = node._color
+      this.$scrollTo('body')
     },
     edgeClicked (event, edge) {
       this.elementType = 'Edge'
@@ -74,6 +78,7 @@ export default {
       this.itemTID = edge.tid
       this.itemName = edge.name
       this.itemColor = edge._color
+      this.$scrollTo('body')
     },
     emitDelete (data) {
       this.$emit('delete-item', data)
