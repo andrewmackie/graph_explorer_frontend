@@ -31,7 +31,6 @@
       <a href="https://flask-sqlalchemy.palletsprojects.com" target="_blank" rel="nofollow noopener, noreferrer">Flask-SQLAlchemy</a> and functionally tested with
       <a href="https://docs.pytest.org/en/latest/" target="_blank" rel="nofollow noopener, noreferrer">PyTest</a>. The back end for this site is hosted on Heroku.
     </p>
-
   </v-container>
 </template>
 
