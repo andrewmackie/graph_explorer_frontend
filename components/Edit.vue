@@ -251,4 +251,5 @@ export default {
   .v-toolbar__title + .v-divider {
    display: none;
  }
+
 </style>

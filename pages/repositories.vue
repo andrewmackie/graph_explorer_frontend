@@ -1,6 +1,7 @@
 <template>
   <v-container id="main" justify="center" align="center">
     <h1>Repositories</h1>
+    <router-link to="/">Home</router-link>
     <h2>Front End</h2>
     <div>
       <v-icon>mdi-github</v-icon>
@@ -138,9 +139,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  h1 {
+    margin-top: 1rem;
+  }
   h2 {
-    margin-top: 3rem;
+    margin-top: 2.5rem;
     margin-bottom: 0.5rem;
   }
   h2:first-of-type {

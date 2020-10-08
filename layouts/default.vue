@@ -6,6 +6,7 @@
       :clipped="clipped"
       fixed
       app
+      temporary
     >
       <v-list>
         <v-list-item
@@ -55,7 +56,7 @@ export default {
     return {
       clipped: false,
       drawer: false,
-      fixed: false,
+      fixed: true,
       items: [
         {
           icon: 'mdi-chart-timeline-variant',
@@ -72,7 +73,7 @@ export default {
         {
           icon: 'mdi-code-tags',
           title: 'Repositories',
-          to: '/code'
+          to: '/repositories'
         }
       ],
       miniVariant: false,

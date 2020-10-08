@@ -179,8 +179,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .container#main {
     max-width: 80%;
+  }
+  @media(max-width: 720px) {
+    .container#main {
+      max-width: 90%;
+    }
+  }
+  @media(max-width: 480px) {
+    .container#main {
+      max-width: 100%;
+    }
   }
 </style>

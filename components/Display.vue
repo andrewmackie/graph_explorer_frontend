@@ -22,6 +22,7 @@
         <v-icon
           small
           @click="deleteItem(item)"
+          style="margin-top: -3px;"
         >
           mdi-delete
         </v-icon>
