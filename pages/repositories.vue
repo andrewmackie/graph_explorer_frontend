@@ -30,8 +30,8 @@
       <a href="https://www.python.org/" target="_blank" rel="nofollow noopener, noreferrer">Python</a>,
       <a href="https://flask.palletsprojects.com" target="_blank" rel="nofollow noopener, noreferrer">Flask</a>,
       <a href="https://flask-sqlalchemy.palletsprojects.com" target="_blank" rel="nofollow noopener, noreferrer">Flask-SQLAlchemy</a> and functionally tested with
-      <a href="https://docs.pytest.org/en/latest/" target="_blank" rel="nofollow noopener, noreferrer">PyTest</a>.</p>
-    <p>The back end for this site is hosted on Heroku, using a pipeline for pytest-based CI.</p>
+      <a href="https://docs.pytest.org/en/latest/" target="_blank" rel="nofollow noopener, noreferrer">pytest</a>.</p>
+    <p>The back end for this site is hosted on Heroku, using a CI/CD pipeline.</p>
   </v-container>
 </template>
 

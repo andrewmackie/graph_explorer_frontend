@@ -4,10 +4,13 @@
     justify="center"
     align="center"
   >
-    <div class="description">
-      This is an app for displaying and editing a simple graph, built for SURROUND by Andrew Mackie. It has <nuxt-link to="/api">OpenAPI documentation</nuxt-link> and the <nuxt-link to="/repositories">repositories</nuxt-link> are open source.
+    <div style="margin-bottom: 1.5rem;">
+      An app for displaying and editing a simple graph, built by Andrew Mackie for SURROUND:
     </div>
-    <div v-if="errorMessage">
+    <div
+      v-if="errorMessage"
+      class="error-message"
+    >
       {{ errorMessage }}
     </div>
     <Graph
@@ -17,8 +20,14 @@
       :loading="loading"
       @delete-item="deleteItem"
     />
-    <div class="description" style="margin-top: 1.5rem;">
+    <div style="margin-top: 1.5rem;">
       Nodes and edges are displayed in the data tables below (where items can be created, edited and deleted):
+    </div>
+    <div
+      v-if="errorMessage"
+      class="error-message"
+    >
+      {{ errorMessage }}
     </div>
     <Edit
       name="Node"
@@ -30,6 +39,12 @@
       @put-item="putItem"
       @post-item="postItem"
     />
+    <div
+      v-if="errorMessage"
+      class="error-message"
+    >
+      {{ errorMessage }}
+    </div>
     <Edit
       name="Edge"
       :headers="edgeHeaders"
@@ -121,6 +136,7 @@ export default {
   methods: {
     deleteItem (data) {
       this.loading = true
+      this.errorMessage = null
       axios({
         method: 'delete',
         url: `${this.serverUrl}/api/v${this.apiVersion}/${data.noun}/${data.id}`
@@ -144,6 +160,7 @@ export default {
     },
     putItem (data) {
       this.loading = true
+      this.errorMessage = null
       axios({
         method: 'put',
         url: `${this.serverUrl}/api/v${this.apiVersion}/${data.noun}/${data.id}`,
@@ -168,6 +185,7 @@ export default {
     },
     postItem (data) {
       this.loading = true
+      this.errorMessage = null
       axios({
         method: 'post',
         url: `${this.serverUrl}/api/v${this.apiVersion}/${data.noun}`,
@@ -209,6 +227,14 @@ export default {
     }
   }
   .description {
+    margin-bottom: 1.5rem;
+  }
+  .error-message {
+    color: red;
+    padding: 5px 8px;
+    border-radius: 3px;
+    margin-top: 1rem;
     margin-bottom: 1rem;
+    background-color: #f6b1be;
   }
 </style>
