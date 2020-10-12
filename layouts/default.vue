@@ -4,9 +4,9 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
-      fixed
+      permanent
+      expand-on-hover
       app
-      temporary
     >
       <v-list>
         <v-list-item
@@ -30,7 +30,7 @@
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <!--<v-app-bar-nav-icon @click.stop="drawer = !drawer" />-->
       <v-toolbar-title v-text="title" />
       <v-spacer />
     </v-app-bar>
@@ -56,7 +56,7 @@ export default {
     return {
       clipped: false,
       drawer: false,
-      fixed: true,
+      fixed: false,
       items: [
         {
           icon: 'mdi-chart-timeline-variant',
@@ -74,7 +74,7 @@ export default {
           to: '/repositories'
         }
       ],
-      miniVariant: false,
+      miniVariant: true,
       right: true,
       rightDrawer: false,
       title: 'Graph Explorer'

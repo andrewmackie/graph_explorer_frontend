@@ -29,10 +29,14 @@
       <a href="https://www.python.org/" target="_blank" rel="nofollow noopener, noreferrer">Python</a>,
       <a href="https://flask.palletsprojects.com" target="_blank" rel="nofollow noopener, noreferrer">Flask</a>,
       <a href="https://flask-sqlalchemy.palletsprojects.com" target="_blank" rel="nofollow noopener, noreferrer">Flask-SQLAlchemy</a> and functionally tested with
-      <a href="https://docs.pytest.org/en/latest/" target="_blank" rel="nofollow noopener, noreferrer">PyTest</a>. The back end for this site is hosted on Heroku.
+      <a href="https://docs.pytest.org/en/latest/" target="_blank" rel="nofollow noopener, noreferrer">PyTest</a>. The back end for this site is hosted on Heroku (and the repository contains the files needed to do this - Procfile, runtime.txt and requirements.txt).
     </p>
   </v-container>
 </template>
+
+export default {
+  name: 'Repositories'
+}
 
 <style scoped>
   h1 {

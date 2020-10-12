@@ -1,6 +1,18 @@
 <template>
   <div>
-    <div style="position: relative;">
+    <div
+      style="position: relative !important;"
+      @contextmenu.prevent="openContextMenu"
+    >
+      <!--
+      <ContextMenu
+        v-if="viewContextMenu"
+        :menu-items="[{title: 'Foo'}, {title: 'Bar'}]"
+        :e="contextMenuEvent"
+        @close-context-menu="viewContextMenu=false"
+      />
+      -->
+      <!-- Progress bar (when performing AJAX requests -->
       <v-progress-linear
         v-if="loading"
         color="blue accent-4"
@@ -9,6 +21,7 @@
         height="4"
         style="position: absolute; top: 0; left: 0; z-index: 10;"
       />
+      <!-- A one-line info bar which appears at the top of the D3Network when a node or edge is clicked -->
       <Display
         id="display"
         v-if="itemId > 0"
@@ -20,8 +33,9 @@
         :item-color="itemColor"
         @delete-item="emitDelete"
       />
+      <!-- The vue-d3-network component for displaying a graph of nodes and edges -->
       <D3Network
-        ref='net'
+        ref="net"
         :net-nodes="nodes"
         :net-links="edges"
         :options="options"
@@ -35,12 +49,14 @@
 <script>
 
 import D3Network from 'vue-d3-network'
+// import ContextMenu from '~/components/ContextMenu.vue'
 import Display from '~/components/Display.vue'
 
 export default {
   name: 'Graph',
   components: {
     D3Network,
+    // ContextMenu,
     Display
   },
   props: {
@@ -67,7 +83,9 @@ export default {
     itemSID: -1,
     itemTID: -1,
     itemName: null,
-    itemColor: null
+    itemColor: null,
+    viewContextMenu: false,
+    contextMenuEvent: null
   }),
   methods: {
     nodeClicked (event, node) {
@@ -91,6 +109,10 @@ export default {
     emitDelete (data) {
       this.$emit('delete-item', data)
       this.itemId = -1
+    },
+    openContextMenu (e) {
+      this.contextMenuEvent = e
+      this.viewContextMenu = true
     }
   }
 }

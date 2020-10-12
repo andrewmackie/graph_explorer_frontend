@@ -1,27 +1,18 @@
 <template>
   <v-container id="main" justify="center" align="center">
     <h1>API Documentation</h1>
-    <!--<h2>Endpoint</h2>
-    <div>
-      <v-icon>mdi-link</v-icon>
-      <a :href="`${serverUrl}/api/v${apiVersion}`" target="_blank" rel="nofollow noopener, noreferrer">
-        {{ `${serverUrl}/api/v${apiVersion}` }}
-      </a>
-    </div>
-    <h2>Documentation</h2>
-    -->
     <div style="margin-top: 1rem;">
-      <div>OpenAPI-spec documentation is available as:</div>
+      <div>OpenAPI-spec documentation has been created for the API:</div>
       <table>
         <tr>
-          <td><span class="bullet">&bull;</span>An interactive client:</td>
+          <td><span class="bullet">&bull;</span>Interactive client:</td>
           <td>
             <v-icon>mdi-laptop-windows</v-icon>
             <a :href="`${serverUrl}/apidocs`" target="_blank" rel="nofollow noopener, noreferrer">{{ `${serverUrl}/apidocs` }}</a>
           </td>
         </tr>
         <tr>
-          <td><span class="bullet">&bull;</span>A JSON document:</td>
+          <td><span class="bullet">&bull;</span>JSON document:</td>
           <td>
             <v-icon>mdi-file-document</v-icon>
             <a :href="`${serverUrl}/apispec_1.json`" target="_blank" rel="nofollow noopener, noreferrer">{{ `${serverUrl}/apispec_1.json` }}</a>
@@ -36,8 +27,7 @@
 // import VueMaterial from 'vue-material'
 
 export default {
-  components: {
-  },
+  name: 'API',
   data: () => ({
     serverUrl: process.env.serverUrl,
     apiVersion: process.env.apiVersion

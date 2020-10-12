@@ -1,6 +1,18 @@
 <template>
-  <v-container id="main" justify="center" align="center">
-    <div v-if="errorMessage">{{ errorMessage }}</div>
+  <v-container
+    id="main"
+    justify="center"
+    align="center"
+  >
+    <div class="description">
+      This front end is built with NuxtJS, VueJS, Vuetify and vue-d3-network at the front end, served on Netlify.
+    </div>
+    <div class="description">
+      The back end is a CRUD REST API built with Flask, SQLAlchemy, PostgreSQL and Flasgger (for OpenAPI documentation). It is served on Heroku using a pipeline and pytest-based CI.
+    </div>
+    <div v-if="errorMessage">
+      {{ errorMessage }}
+    </div>
     <Graph
       :nodes="nodes"
       :edges="edges"
@@ -8,6 +20,9 @@
       :loading="loading"
       @delete-item="deleteItem"
     />
+    <div class="description" style="margin-top: 1.5rem;">
+      Nodes and edges are displayed in the data tables below (where items can be created, edited and deleted):
+    </div>
     <Edit
       name="Node"
       :headers="nodeHeaders"
@@ -36,6 +51,7 @@ import Edit from '~/components/Edit.vue'
 import Graph from '~/components/Graph.vue'
 
 export default {
+  name: 'Index',
   components: {
     Edit,
     Graph
@@ -131,7 +147,6 @@ export default {
     },
     putItem (data) {
       this.loading = true
-      console.log(data.item)
       axios({
         method: 'put',
         url: `${this.serverUrl}/api/v${this.apiVersion}/${data.noun}/${data.id}`,
@@ -195,5 +210,8 @@ export default {
     .container#main {
       max-width: 100%;
     }
+  }
+  .description {
+    margin-bottom: 1rem;
   }
 </style>
