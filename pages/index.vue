@@ -5,10 +5,7 @@
     align="center"
   >
     <div class="description">
-      This front end is built with NuxtJS, VueJS, Vuetify and vue-d3-network at the front end, served on Netlify.
-    </div>
-    <div class="description">
-      The back end is a CRUD REST API built with Flask, SQLAlchemy, PostgreSQL and Flasgger (for OpenAPI documentation). It is served on Heroku using a pipeline and pytest-based CI.
+      This is an app for displaying and editing a simple graph, built for SURROUND by Andrew Mackie. It has <nuxt-link to="/api">OpenAPI documentation</nuxt-link> and the <nuxt-link to="/repositories">repositories</nuxt-link> are open source.
     </div>
     <div v-if="errorMessage">
       {{ errorMessage }}
