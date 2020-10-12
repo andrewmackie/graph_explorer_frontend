@@ -3,7 +3,7 @@
    See https://alexjover.com/blog/write-the-first-vue-js-component-unit-test-in-jest/
 */
 
-import { mount, shallowMount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Display from '@/components/Display.vue'
 import Edit from '@/components/Edit.vue'
 import Graph from '@/components/Graph.vue'
@@ -24,7 +24,7 @@ describe('Edit', () => {
 
 describe('Graph', () => {
   test('is a Vue instance', () => {
-    const wrapper = mount(Graph)
+    const wrapper = shallowMount(Graph)
     expect(wrapper.vm).toBeTruthy()
   })
 })
