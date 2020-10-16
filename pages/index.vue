@@ -5,7 +5,7 @@
     align="center"
   >
     <div style="margin-bottom: 1.5rem;">
-      An app for displaying and editing a simple graph, built by Andrew Mackie for SURROUND:
+      An app for displaying and editing a simple graph:
     </div>
     <div
       v-if="errorMessage"
