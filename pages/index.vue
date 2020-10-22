@@ -101,7 +101,7 @@ export default {
     },
     options: {
       force: 3000,
-      size: { h: 650 },
+      size: { h: 750 },
       nodeSize: 20,
       nodeLabels: true,
       linkLabels: true,
@@ -149,8 +149,6 @@ export default {
         })
         .catch((error, data) => {
           // handle error
-          this.nodes = []
-          this.edges = []
           this.errorMessage = error.toString()
         })
         .finally((data) => {
@@ -174,8 +172,6 @@ export default {
         })
         .catch((error, data) => {
           // handle error
-          this.nodes = []
-          this.edges = []
           this.errorMessage = error.toString()
         })
         .finally((data) => {
@@ -199,8 +195,6 @@ export default {
         })
         .catch((error, data) => {
           // handle error
-          this.nodes = []
-          this.edges = []
           this.errorMessage = error.toString()
         })
         .finally((data) => {
