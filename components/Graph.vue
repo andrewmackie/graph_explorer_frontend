@@ -35,21 +35,23 @@
       />
       <!-- The vue-d3-network component for displaying a graph of nodes and edges -->
       <!-- This is the SVG marker for the arrow heads - see https://vanseodesign.com/web-design/svg-markers/ -->
-      <svg >
-        <defs>
-          <marker
-            id="m-end"
-            markerWidth="10"
-            markerHeight="10"
-            refX="8"
-            refY="1.5"
-            orient="auto"
-            markerUnits="strokeWidth"
-          >
-            <path d="M0,0 L0,3 L5,1.5 z" />
-          </marker>
-        </defs>
-      </svg>
+      <div style="height:0;">
+        <svg>
+          <defs>
+            <marker
+              id="m-end"
+              markerWidth="10"
+              markerHeight="10"
+              refX="8"
+              refY="1.5"
+              orient="auto"
+              markerUnits="strokeWidth"
+            >
+              <path d="M0,0 L0,3 L5,1.5 z" />
+            </marker>
+          </defs>
+        </svg>
+      </div>
       <D3Network
         ref="net"
         :net-nodes="nodes"
