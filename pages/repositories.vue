@@ -12,7 +12,7 @@
       <a href="https://nuxtjs.org/" target="_blank" rel="nofollow noopener, noreferrer">NuxtJS</a>
       (a <a href="https://vuejs.org/" target="_blank" rel="nofollow noopener, noreferrer">VueJS</a>
       framework),
-      <a href="https://github.com/emiliorizzo/vue-d3-network" target="_blank" rel="nofollow noopener, noreferrer">v3-d3-network</a>
+      <a href="https://github.com/emiliorizzo/vue-d3-network" target="_blank" rel="nofollow noopener, noreferrer">vue-d3-network</a>
       to display the graph and data tables from
       <a href="https://vuetifyjs.com/en/" target="_blank" rel="nofollow noopener, noreferrer">VuetifyJS</a>
       (a

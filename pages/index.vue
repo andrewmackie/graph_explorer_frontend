@@ -5,7 +5,7 @@
     align="center"
   >
     <div style="margin-bottom: 1.5rem;">
-      An app for displaying and editing a simple graph:
+      An app for displaying and editing a simple graph (using a CRUD REST API with <nuxt-link to="/api">OpenAPI documentation</nuxt-link>):
     </div>
     <div
       v-if="errorMessage"
@@ -96,13 +96,13 @@ export default {
     ],
     nodeDefaultItem: {
       id: 1,
-      name: 'Foo',
+      name: '',
       _color: '#666666'
     },
     options: {
       force: 3000,
       size: { h: 750 },
-      nodeSize: 20,
+      nodeSize: 15,
       nodeLabels: true,
       linkLabels: true,
       canvas: false

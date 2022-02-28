@@ -34,11 +34,28 @@
         @delete-item="emitDelete"
       />
       <!-- The vue-d3-network component for displaying a graph of nodes and edges -->
+      <!-- This is the SVG marker for the arrow heads - see https://vanseodesign.com/web-design/svg-markers/ -->
+      <svg >
+        <defs>
+          <marker
+            id="m-end"
+            markerWidth="10"
+            markerHeight="10"
+            refX="8"
+            refY="1.5"
+            orient="auto"
+            markerUnits="strokeWidth"
+          >
+            <path d="M0,0 L0,3 L5,1.5 z" />
+          </marker>
+        </defs>
+      </svg>
       <D3Network
         ref="net"
         :net-nodes="nodes"
         :net-links="edges"
         :options="options"
+        :link-cb="lcb"
         @node-click="nodeClicked"
         @link-click="edgeClicked"
       />
@@ -113,6 +130,10 @@ export default {
     openContextMenu (e) {
       this.contextMenuEvent = e
       this.viewContextMenu = true
+    },
+    lcb (link) {
+      link._svgAttrs = { 'marker-end': 'url(#m-end)' } //, 'marker-start': 'url(#m-start)' }
+      return link
     }
   }
 }
@@ -149,6 +170,11 @@ ul.menu li {
   margin-top: 1em;
   position: relative;
 }
+
+#m-end path, #m-start path {
+  fill: #1aad8d;
+}
+
 </style>
 
 <style>

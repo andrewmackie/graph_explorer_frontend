@@ -48,21 +48,21 @@
               <v-card-title v-else>New {{ name }}</v-card-title>
               <v-card-text>
                 <v-container>
-                  <v-row>
-                    <v-col
-                      v-for="header in headersFiltered"
-                      :key="header.text"
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem[header.value]"
-                        :label="header.text"
-                      />
-                    </v-col>
-                    <chrome-picker @input="updateColor" :value="editedItem['_color'] || '#000000'" />
+                  <v-row
+                    v-for="header in headersFiltered"
+                    :key="header.text"
+                    cols="1"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem[header.value]"
+                      :label="header.text"
+                      autofocus="true"
+                      style="margin-bottom: 20px;"
+                    />
                   </v-row>
+                  <compact-color-picker @input="updateColor" :value="editedItem['_color'] || '#000000'" />
                 </v-container>
               </v-card-text>
               <v-card-actions>
@@ -121,12 +121,12 @@
 
 <script>
 
-import { Chrome } from 'vue-color'
+import { Slider } from 'vue-color'
 
 export default {
   name: 'Edit',
   components: {
-    'chrome-picker': Chrome
+    'compact-color-picker': Slider
   },
   props: {
     name: {
