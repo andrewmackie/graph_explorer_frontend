@@ -4,8 +4,35 @@
     justify="center"
     align="center"
   >
-    <div style="margin-bottom: 1.5rem;">
-      An app for displaying and editing a simple graph (using a CRUD REST API with <nuxt-link to="/api">OpenAPI documentation</nuxt-link>):
+    <div
+      class="flex-container-space-between"
+      style="width: 100%; margin-bottom: 1.5rem;"
+    >
+      <div
+        class="flex-item"
+        style="width: fit-content; margin-bottom: 40px;"
+      >
+        An app for displaying and editing a simple graph (using a CRUD REST API with <nuxt-link to="/api">OpenAPI documentation</nuxt-link>):
+      </div>
+      <!--
+      <div
+        class="flex-item"
+        style="width: fit-content;"
+      >
+        <v-btn
+          v-if="!addingEdge"
+          @click="addingEdge=true; addingEdgeNodeSid=null; addingEdgeNodeTid=null; keyToForceReRender += 1;"
+        >
+          Add Edge
+        </v-btn>
+        <v-btn
+          v-if="addingEdge"
+          @click="cancelAddEdge()"
+        >
+          Cancel Add Edge
+        </v-btn>
+      </div>
+    -->
     </div>
     <div
       v-if="errorMessage"
@@ -16,9 +43,17 @@
     <Graph
       :nodes="nodes"
       :edges="edges"
-      :options="options"
+      :options="d3Options"
       :loading="loading"
+      :adding-edge="addingEdge"
+      :adding-edge-node-sid="addingEdgeNodeSid"
+      :adding-edge-node-tid="addingEdgeNodeTid"
+      :key-to-force-re-render="keyToForceReRender"
+      @add-edge-node="addEdgeNode"
       @delete-item="deleteItem"
+      @add-edge-from-selected="addEdgeFromSelected"
+      @cancel-add-edge="cancelAddEdge"
+      @set-position="setPosition"
     />
     <div style="margin-top: 1.5rem;">
       Nodes and edges are displayed in the data tables below (where items can be created, edited and deleted):
@@ -69,6 +104,9 @@ export default {
     Graph
   },
   data: () => ({
+    addingEdge: false,
+    addingEdgeNodeSid: null,
+    addingEdgeNodeTid: null,
     edges: [],
     edgeHeaders: [
       { text: 'Id', value: 'id', align: 'center' },
@@ -87,7 +125,9 @@ export default {
     },
     errorMessage: null,
     loading: true,
+    keyToForceReRender: 1,
     nodes: [],
+    nodesTemp: [],
     nodeHeaders: [
       { text: 'Id', value: 'id', align: 'center' },
       { text: 'Name', value: 'name', align: 'center' },
@@ -99,13 +139,21 @@ export default {
       name: '',
       _color: '#666666'
     },
-    options: {
-      force: 3000,
-      size: { h: 750 },
+    d3Options: {
+      force: 2000,
+      /* forces: {
+        // X: 500,
+        // Y: 500
+        // ManyBody: -10
+        Center: 10
+      }, */
+      radius: 0.5,
+      size: { h: 900, w: 1400 },
       nodeSize: 15,
       nodeLabels: true,
       linkLabels: true,
-      canvas: false
+      canvas: false,
+      fontSize: 12
     },
     serverUrl: process.env.serverUrl,
     apiVersion: process.env.apiVersion
@@ -119,7 +167,7 @@ export default {
     // See https://michaelnthiessen.com/this-is-undefined/ 'Using the right function when fetching data' which fixed 'this is undefined'
       .then((response, data) => {
         // handle success
-        this.nodes = response.data.nodes
+        this.nodes = this.positionNodes(response.data.nodes)
         this.edges = response.data.edges
       })
       .catch((error, data) => {
@@ -134,6 +182,42 @@ export default {
       })
   },
   methods: {
+    addEdgeNode (data) {
+      if (this.addingEdge) {
+        if (!this.addingEdgeNodeSid) {
+          this.addingEdgeNodeSid = data
+        } else {
+          if (data === this.addingEdgeNodeSid) {
+            this.addingEdgeNodeSid = null
+            this.addingEdge = false
+            return
+          }
+          this.addingEdgeNodeTid = data
+          this.postItem({
+            noun: 'edge',
+            item: {
+              sid: this.addingEdgeNodeSid,
+              tid: this.addingEdgeNodeTid
+            }
+          })
+          this.addingEdge = false
+          /* Keep this.addingEdgeNodeSid and Tid to display the newly-created link */
+        }
+      }
+    },
+    addEdgeFromSelected (nodeId) {
+      this.addingEdge = true
+      this.addingEdgeNodeSid = nodeId
+    },
+    setPosition (data) {
+      if (data) { this.putItem(data) }
+    },
+    cancelAddEdge () {
+      this.addingEdge = false
+      this.addingEdgeNodeSid = null
+      this.addingEdgeNodeTid = null
+      this.keyToForceReRender += 1
+    },
     deleteItem (data) {
       this.loading = true
       this.errorMessage = null
@@ -154,7 +238,33 @@ export default {
         .finally((data) => {
           // always executed
           this.loading = false
+          this.addingEdgeNodeSid = null
+          this.addingEdgeNodeTid = null
         })
+    },
+    positionNodes (nodes) {
+      // Determine the positions
+      const xMin = 50
+      const labelLength = 100 // Replace with calc based on actual lengths
+      const xMax = this.d3Options.size.w - xMin - labelLength
+      const yMin = 40
+      const yMax = this.d3Options.size.h - yMin
+      const xCenter = Math.round(this.d3Options.size.w / 2)
+      const yCenter = Math.round(this.d3Options.size.h / 2)
+      nodes.forEach(function (n) {
+        if (n.position === 'topLeft') {
+          [n.fx, n.fy] = [xMin, yMin]
+        } else if (n.position === 'topRight') {
+          [n.fx, n.fy] = [xMax, yMin]
+        } else if (n.position === 'bottomLeft') {
+          [n.fx, n.fy] = [xMin, yMax]
+        } else if (n.position === 'bottomRight') {
+          [n.fx, n.fy] = [xMax, yMax]
+        } else if (n.position === 'center') {
+          [n.fx, n.fy] = [xCenter, yCenter]
+        }
+      })
+      return nodes
     },
     putItem (data) {
       this.loading = true
@@ -167,7 +277,7 @@ export default {
         // See https://michaelnthiessen.com/this-is-undefined/ 'Using the right function when fetching data' which fixed 'this is undefined'
         .then((response, data) => {
           // handle success
-          this.nodes = response.data.nodes
+          this.nodes = this.positionNodes(response.data.nodes)
           this.edges = response.data.edges
         })
         .catch((error, data) => {
@@ -177,6 +287,8 @@ export default {
         .finally((data) => {
           // always executed
           this.loading = false
+          this.addingEdgeNodeSid = null
+          this.addingEdgeNodeTid = null
         })
     },
     postItem (data) {
@@ -190,7 +302,7 @@ export default {
         // See https://michaelnthiessen.com/this-is-undefined/ 'Using the right function when fetching data' which fixed 'this is undefined'
         .then((response, data) => {
           // handle success
-          this.nodes = response.data.nodes
+          this.nodes = this.positionNodes(response.data.nodes)
           this.edges = response.data.edges
         })
         .catch((error, data) => {
@@ -207,6 +319,16 @@ export default {
 </script>
 
 <style scoped>
+  .v-application--wrap {
+    background-color: #ccc !important;
+    width: 30px !important;
+  }
+</style>
+
+<style scoped>
+  .v-application--wrap {
+    background-color: #ccc;
+  }
   .container#main {
     max-width: 80%;
   }

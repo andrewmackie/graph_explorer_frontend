@@ -85,7 +85,10 @@ export default {
 
 <style>
   .graphtemplate {
-    background-color: #f6f6f6;
+    background-color: #666;
     margin-top: 1rem;
+  }
+  .v-navigation-drawer, .v-navigation-drawer__content, .v-navigation-drawer__border {
+    height: 100% !important;
   }
 </style>

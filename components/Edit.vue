@@ -7,9 +7,11 @@
       :headers="headers"
       :items="items"
       sort-by="id"
+      sort-desc
       class="elevation-1"
       :loading="loading"
       :search="search"
+      light
     >
       <template v-slot:top>
         <v-toolbar
@@ -49,7 +51,7 @@
               <v-card-text>
                 <v-container>
                   <v-row
-                    v-for="header in headersFiltered"
+                    v-for="(header, index) in headersFiltered"
                     :key="header.text"
                     cols="1"
                     sm="6"
@@ -58,11 +60,11 @@
                     <v-text-field
                       v-model="editedItem[header.value]"
                       :label="header.text"
-                      autofocus="true"
+                      :autofocus="index === 0"
                       style="margin-bottom: 20px;"
                     />
                   </v-row>
-                  <compact-color-picker @input="updateColor" :value="editedItem['_color'] || '#000000'" />
+                  <slider-color-picker @input="updateColor" :value="editedItem['_color'] || '#000000'" />
                 </v-container>
               </v-card-text>
               <v-card-actions>
@@ -126,7 +128,7 @@ import { Slider } from 'vue-color'
 export default {
   name: 'Edit',
   components: {
-    'compact-color-picker': Slider
+    'slider-color-picker': Slider
   },
   props: {
     name: {

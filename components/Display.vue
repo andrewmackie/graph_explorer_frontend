@@ -27,6 +27,49 @@
           mdi-delete
         </v-icon>
       </div>
+      <div @click="$emit('add-edge-from-selected', itemId)" style="cursor: pointer; margin-left: 10px">
+        <v-icon
+          size="20"
+          style="margin-top: -3px;"
+        >
+          mdi-link-plus
+        </v-icon>
+        <span style="margin-left: 2px;">Add Edge</span>
+      </div>
+      <div
+        class="position-arrows"
+      >
+        <v-icon
+          size="22"
+          @click="$emit('set-position', renderDataForPosition('topLeft'))"
+        >
+          mdi-arrow-top-left
+        </v-icon>
+        <v-icon
+          size="22"
+          @click="$emit('set-position', renderDataForPosition('topRight'))"
+        >
+          mdi-arrow-top-right
+        </v-icon>
+        <v-icon
+          size="22"
+          @click="$emit('set-position', renderDataForPosition('bottomLeft'))"
+        >
+          mdi-arrow-bottom-left
+        </v-icon>
+        <v-icon
+          size="22"
+          @click="$emit('set-position', renderDataForPosition('bottomRight'))"
+        >
+          mdi-arrow-bottom-right
+        </v-icon>
+        <v-icon
+          size="22"
+          @click="$emit('set-position', renderDataForPosition('center'))"
+        >
+          mdi-image-filter-center-focus
+        </v-icon>
+      </div>
     </div>
   </div>
 </template>
@@ -35,8 +78,7 @@
 
 export default {
   name: 'Display',
-  components: {
-  },
+  components: {},
   props: {
     elementType: {
       type: String,
@@ -63,14 +105,25 @@ export default {
       default: null
     }
   },
-  data: () => ({
-  }),
+  data: () => ({}),
   methods: {
     deleteItem (item) {
       confirm(`Are you sure you want to delete this ${this.elementType.toLowerCase()}?`) && this.deleteItemConfirm()
     },
     deleteItemConfirm (itemId) {
       this.$emit('delete-item', { noun: this.elementType.toLowerCase(), id: this.itemId })
+    },
+    renderDataForPosition (position) {
+      return {
+        noun: 'node',
+        id: this.itemId,
+        item: {
+          id: this.itemId,
+          name: this.itemName,
+          _color: this.itemColor,
+          position
+        }
+      }
     }
   }
 }
@@ -79,14 +132,13 @@ export default {
 <style scoped>
  .display {
    position: absolute;
-   top: 0;
+   top: -25px;
    left: 0;
    z-index: 1;
    padding: 5px 0 0 0;
    box-shadow: none !important;
-   border-bottom: 1px #ddd solid;
    border-radius: 0;
-   background-color: #fcfcfc;
+   background-color: #888;
    width: 100%;
    text-align: center;
  }
@@ -101,5 +153,12 @@ export default {
  }
  .display div strong {
    margin-right: 6px;
+ }
+ .position-arrows {
+   margin-left: 10px;
+ }
+
+ .position-arrows button {
+   padding: 2px;
  }
  </style>

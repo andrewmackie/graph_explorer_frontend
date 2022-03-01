@@ -25,6 +25,7 @@
       <Display
         id="display"
         v-if="itemId > 0"
+        :style="{width: `${options.size.w}px`}"
         :element-type="elementType"
         :item-id="itemId"
         :item-s-i-d="itemSID"
@@ -32,6 +33,16 @@
         :item-name="itemName"
         :item-color="itemColor"
         @delete-item="emitDelete"
+        @add-edge-from-selected="$emit('add-edge-from-selected', itemId)"
+        @set-position="setPosition"
+      />
+      <DisplayAddingEdge
+        id="displayAddingEdge"
+        v-if="addingEdge"
+        :style="{width: `${options.size.w}px`}"
+        :adding-edge-node-sid="addingEdgeNodeSid"
+        :adding-edge-node-tid="addingEdgeNodeTid"
+        @cancel-add-edge="$emit('cancel-add-edge')"
       />
       <!-- The vue-d3-network component for displaying a graph of nodes and edges -->
       <!-- This is the SVG marker for the arrow heads - see https://vanseodesign.com/web-design/svg-markers/ -->
@@ -54,31 +65,50 @@
       </div>
       <D3Network
         ref="net"
-        :net-nodes="nodes"
+        :net-nodes="nodesHighlighted"
         :net-links="edges"
         :options="options"
         :link-cb="lcb"
         @node-click="nodeClicked"
         @link-click="edgeClicked"
+        :style="{width: `${options.size.w}px`}"
       />
     </div>
   </div>
 </template>
 
 <script>
-
 import D3Network from 'vue-d3-network'
 // import ContextMenu from '~/components/ContextMenu.vue'
 import Display from '~/components/Display.vue'
+import DisplayAddingEdge from '~/components/DisplayAddingEdge.vue'
 
 export default {
   name: 'Graph',
   components: {
     D3Network,
     // ContextMenu,
-    Display
+    Display,
+    DisplayAddingEdge
   },
   props: {
+    addingEdge: {
+      type: Boolean,
+      default: false
+    },
+    addingEdgeNodeSid: {
+      type: Number,
+      default: null
+    },
+    addingEdgeNodeTid: {
+      type: Number,
+      default: null
+    },
+    /* To force Graph.vue to rerender and call the computed value again (to remove red dots from addingEdge) */
+    keyToForceReRender: {
+      type: Number,
+      default: 1
+    },
     nodes: {
       type: Array,
       default: null
@@ -106,15 +136,44 @@ export default {
     viewContextMenu: false,
     contextMenuEvent: null
   }),
+  computed: {
+    nodesHighlighted () {
+      // eslint-disable-next-line no-unused-vars
+      const temp = this.keyToForceReRender /* Just mentioning the key forces a recompute */
+      if (!this.nodes | this.nodes.length === 0 | !this.addingEdge | !this.addingEdgeNodeSid) {
+        return this.nodes
+      } else {
+        /* Return the nodes with different colours for the addingEdgeNodeSid and addingEdgeNodeTid */
+        const tempNodes = this.$_.cloneDeep(this.nodes)
+        const self = this
+        tempNodes.forEach(function (n) {
+          if ([self.addingEdgeNodeSid, self.addingEdgeNodeTid].includes(n.id)) {
+            n._color = '#ff0000'
+          }
+        })
+        return tempNodes
+      }
+    }
+  },
   methods: {
     nodeClicked (event, node) {
-      this.elementType = 'Node'
-      this.itemId = node.id
-      this.itemSID = -1
-      this.itemTID = -1
-      this.itemName = node.name
-      this.itemColor = node._color
-      this.$scrollTo('body')
+      if (!this.addingEdge) {
+        this.elementType = 'Node'
+        this.itemId = node.id
+        this.itemSID = -1
+        this.itemTID = -1
+        this.itemName = node.name
+        this.itemColor = node._color
+        this.$scrollTo('body')
+        this.addingEdgeNodeSid = null
+        this.addingEdgeNodeTid = null
+      } else {
+        this.$emit('add-edge-node', node.id)
+      }
+    },
+    setPosition (data) {
+      // Pass it up the line to index.vue
+      this.$emit('set-position', data)
     },
     edgeClicked (event, edge) {
       this.elementType = 'Edge'
@@ -144,11 +203,13 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=PT+Sans');
 
+* {
+  box-shadow: none !important;
+}
 div {
   font-family: 'PT Sans', sans-serif;
   background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
   position: relative;
 }
 .title{
