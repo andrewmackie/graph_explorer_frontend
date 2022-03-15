@@ -67,7 +67,7 @@ export default {
 <style scoped>
  .display {
    position: absolute;
-   top: -25px;
+   top: -30px;
    left: 0;
    z-index: 1;
    padding: 5px 0 0 0;

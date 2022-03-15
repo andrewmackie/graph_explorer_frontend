@@ -4,13 +4,15 @@
     justify="center"
     align="center"
   >
+    {{ d3Options.size.w }}w {{ d3Options.size.h }}h
     <div
       class="flex-container-space-between"
       style="width: 100%; margin-bottom: 1.5rem;"
     >
       <div
         class="flex-item"
-        style="width: fit-content; margin-bottom: 40px;"
+        style="margin-bottom: 40px;"
+        :style="{width: graphWidth}"
       >
         An app for displaying and editing a simple graph (using a CRUD REST API with <nuxt-link to="/api">OpenAPI documentation</nuxt-link>):
       </div>
@@ -70,6 +72,7 @@
       :items="nodes"
       :loading="loading"
       :default-item="nodeDefaultItem"
+      :width="graphWidth"
       @delete-item="deleteItem"
       @put-item="putItem"
       @post-item="postItem"
@@ -85,6 +88,7 @@
       :headers="edgeHeaders"
       :items="edges"
       :loading="loading"
+      :width="graphWidth"
       @delete-item="deleteItem"
       @put-item="putItem"
       @post-item="postItem"
@@ -124,6 +128,12 @@ export default {
       _color: '#666666'
     },
     errorMessage: null,
+    graphHeight: 900,
+    graphMaxHeight: 900,
+    graphMaxWidth: 2000,
+    graphPaddingHeight: 100,
+    graphPaddingWidth: 100,
+    graphWidth: 2000,
     loading: true,
     keyToForceReRender: 1,
     nodes: [],
@@ -140,15 +150,15 @@ export default {
       _color: '#666666'
     },
     d3Options: {
-      force: 2000,
+      force: 4000,
       /* forces: {
         // X: 500,
         // Y: 500
         // ManyBody: -10
         Center: 10
       }, */
-      radius: 0.5,
-      size: { h: 900, w: 1400 },
+      radius: 1,
+      size: { h: 600, w: 800 },
       nodeSize: 15,
       nodeLabels: true,
       linkLabels: true,
@@ -160,6 +170,11 @@ export default {
     // serverUrl: 'http://localhost:5000/api/v0'
   }),
   mounted () {
+    this.$nextTick(() => {
+      this.setGraphHeight(window.innerHeight)
+      this.setGraphWidth(window.innerWidth)
+      window.addEventListener('resize', this.onResize)
+    })
     axios({
       method: 'get',
       url: `${this.serverUrl}/api/v${this.apiVersion}/graph`
@@ -181,7 +196,30 @@ export default {
         this.loading = false
       })
   },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onResize)
+  },
   methods: {
+    onResize () {
+      this.setGraphHeight(window.innerHeight)
+      this.setGraphWidth(window.innerWidth)
+    },
+    setGraphHeight (viewportHeight) {
+      if (viewportHeight >= this.graphMaxHeight) {
+        this.graphHeight = this.graphMaxHeight
+      } else {
+        this.graphHeight = viewportHeight - 2 * this.graphPaddingHeight
+      }
+      this.d3Options.size.h = this.graphHeight
+    },
+    setGraphWidth (viewportWidth) {
+      if (viewportWidth >= this.graphMaxWidth) {
+        this.graphWidth = this.graphMaxWidth
+      } else {
+        this.graphWidth = viewportWidth - 2 * this.graphPaddingWidth
+      }
+      this.d3Options.size.w = this.graphWidth
+    },
     addEdgeNode (data) {
       if (this.addingEdge) {
         if (!this.addingEdgeNodeSid) {
@@ -228,7 +266,7 @@ export default {
         // See https://michaelnthiessen.com/this-is-undefined/ 'Using the right function when fetching data' which fixed 'this is undefined'
         .then((response, data) => {
           // handle success
-          this.nodes = response.data.nodes
+          this.nodes = this.positionNodes(response.data.nodes)
           this.edges = response.data.edges
         })
         .catch((error, data) => {
@@ -244,24 +282,34 @@ export default {
     },
     positionNodes (nodes) {
       // Determine the positions
-      const xMin = 50
+      const xMin = 30
       const labelLength = 100 // Replace with calc based on actual lengths
       const xMax = this.d3Options.size.w - xMin - labelLength
-      const yMin = 40
+      const yMin = 25
       const yMax = this.d3Options.size.h - yMin
       const xCenter = Math.round(this.d3Options.size.w / 2)
       const yCenter = Math.round(this.d3Options.size.h / 2)
       nodes.forEach(function (n) {
-        if (n.position === 'topLeft') {
-          [n.fx, n.fy] = [xMin, yMin]
-        } else if (n.position === 'topRight') {
-          [n.fx, n.fy] = [xMax, yMin]
-        } else if (n.position === 'bottomLeft') {
-          [n.fx, n.fy] = [xMin, yMax]
-        } else if (n.position === 'bottomRight') {
-          [n.fx, n.fy] = [xMax, yMax]
-        } else if (n.position === 'center') {
-          [n.fx, n.fy] = [xCenter, yCenter]
+        if (n.position) {
+          if (n.position === 'topLeft') {
+            [n.fx, n.fy] = [xMin, yMin]
+          } else if (n.position === 'topCenter') {
+            [n.fx, n.fy] = [xCenter, yMin]
+          } else if (n.position === 'topRight') {
+            [n.fx, n.fy] = [xMax, yMin]
+          } else if (n.position === 'bottomLeft') {
+            [n.fx, n.fy] = [xMin, yMax]
+          } else if (n.position === 'bottomCenter') {
+            [n.fx, n.fy] = [xCenter, yMax]
+          } else if (n.position === 'bottomRight') {
+            [n.fx, n.fy] = [xMax, yMax]
+          } else if (n.position === 'centerLeft') {
+            [n.fx, n.fy] = [xMin, yCenter]
+          } else if (n.position === 'center') {
+            [n.fx, n.fy] = [xCenter, yCenter]
+          } else if (n.position === 'centerRight') {
+            [n.fx, n.fy] = [xMax, yCenter]
+          }
         }
       })
       return nodes
@@ -328,19 +376,6 @@ export default {
 <style scoped>
   .v-application--wrap {
     background-color: #ccc;
-  }
-  .container#main {
-    max-width: 80%;
-  }
-  @media(max-width: 720px) {
-    .container#main {
-      max-width: 90%;
-    }
-  }
-  @media(max-width: 480px) {
-    .container#main {
-      max-width: 100%;
-    }
   }
   .description {
     margin-bottom: 1.5rem;

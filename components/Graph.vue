@@ -127,14 +127,14 @@ export default {
     }
   },
   data: () => ({
+    contextMenuEvent: null,
     elementType: null,
     itemId: -1,
     itemSID: -1,
     itemTID: -1,
     itemName: null,
     itemColor: null,
-    viewContextMenu: false,
-    contextMenuEvent: null
+    viewContextMenu: false
   }),
   computed: {
     nodesHighlighted () {
@@ -153,6 +153,11 @@ export default {
         })
         return tempNodes
       }
+    }
+  },
+  watch: {
+    windowHeight (newHeight, oldHeight) {
+      this.txt = `it changed to ${newHeight} from ${oldHeight}`
     }
   },
   methods: {

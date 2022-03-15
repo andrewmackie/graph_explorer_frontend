@@ -91,4 +91,10 @@ export default {
   .v-navigation-drawer, .v-navigation-drawer__content, .v-navigation-drawer__border {
     height: 100% !important;
   }
+  a {
+    color: #73b7f1 !important;
+  }
+  a:visited {
+    color: #52abf6 !important;
+  }
 </style>

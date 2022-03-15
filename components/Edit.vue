@@ -11,6 +11,7 @@
       class="elevation-1"
       :loading="loading"
       :search="search"
+      width="width"
       light
     >
       <template v-slot:top>
@@ -154,6 +155,10 @@ export default {
     defaultItem: {
       type: Object,
       default () { return {} }
+    },
+    width: {
+      type: Number,
+      default: 500
     }
   },
   computed: {

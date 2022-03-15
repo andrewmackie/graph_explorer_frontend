@@ -36,26 +36,46 @@
         </v-icon>
         <span style="margin-left: 2px;">Add Edge</span>
       </div>
-      <div
+      <table
         class="position-arrows"
       >
-        <v-icon
-          size="22"
-          @click="$emit('set-position', renderDataForPosition('topLeft'))"
-        >
-          mdi-arrow-top-left
-        </v-icon>
-        <v-icon
-          size="22"
-          @click="$emit('set-position', renderDataForPosition('topRight'))"
-        >
-          mdi-arrow-top-right
-        </v-icon>
+        <tr>
+          <td>
+            <v-icon
+              size="22"
+              @click="$emit('set-position', renderDataForPosition('topLeft'))"
+            >
+              mdi-arrow-top-left
+            </v-icon>
+          </td>
+          <td>
+            <v-icon
+              size="22"
+              @click="$emit('set-position', renderDataForPosition('topCenter'))"
+            >
+              mdi-arrow-up
+            </v-icon>
+          </td>
+          <td>
+            <v-icon
+              size="22"
+              @click="$emit('set-position', renderDataForPosition('topRight'))"
+            >
+              mdi-arrow-top-right
+            </v-icon>
+          </td>
+        </tr>
         <v-icon
           size="22"
           @click="$emit('set-position', renderDataForPosition('bottomLeft'))"
         >
           mdi-arrow-bottom-left
+        </v-icon>
+        <v-icon
+          size="22"
+          @click="$emit('set-position', renderDataForPosition('bottomCenter'))"
+        >
+          mdi-arrow-down
         </v-icon>
         <v-icon
           size="22"
@@ -65,11 +85,23 @@
         </v-icon>
         <v-icon
           size="22"
+          @click="$emit('set-position', renderDataForPosition('centerLeft'))"
+        >
+          mdi-arrow-left
+        </v-icon>
+        <v-icon
+          size="22"
           @click="$emit('set-position', renderDataForPosition('center'))"
         >
           mdi-image-filter-center-focus
         </v-icon>
-      </div>
+        <v-icon
+          size="22"
+          @click="$emit('set-position', renderDataForPosition('centerRight'))"
+        >
+          mdi-arrow-right
+        </v-icon>
+      </table>
     </div>
   </div>
 </template>
@@ -132,7 +164,7 @@ export default {
 <style scoped>
  .display {
    position: absolute;
-   top: -25px;
+   top: -30px;
    left: 0;
    z-index: 1;
    padding: 5px 0 0 0;
